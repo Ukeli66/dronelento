@@ -1,0 +1,763 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Neo-lentokoulu</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: ilmailukartan tapainen sivu. Oppaan kortit vaaleina, peli oman tummansinisen taivaslaatikkonsa sisällä. */
+:root{
+  --bg:#eef2f4;--surface:#ffffff;--fg:#14232b;--muted:#51636d;--line:#cbd6db;
+  --accent:#d9480f;--accent-fg:#ffffff;--ok:#2b8a3e;--warn:#b45309;--bad:#c92a2a;--tint:#e3ebef;
+  --f-display:'Barlow Condensed','Arial Narrow',Arial,sans-serif;
+  --f-body:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1a20;--surface:#15252d;--fg:#e6eef1;--muted:#9bb0ba;--line:#2a3f49;
+  --accent:#ff8a4c;--accent-fg:#1a0d05;--ok:#69db7c;--warn:#fcc419;--bad:#ff8787;--tint:#1b2f38;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1a20;--surface:#15252d;--fg:#e6eef1;--muted:#9bb0ba;--line:#2a3f49;
+  --accent:#ff8a4c;--accent-fg:#1a0d05;--ok:#69db7c;--warn:#fcc419;--bad:#ff8787;--tint:#1b2f38;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.6}
+.wrap{max-width:980px;margin:0 auto;padding-block:28px 56px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);font-weight:700;line-height:1.05;margin:0;text-wrap:balance;letter-spacing:.01em}
+h1{font-size:clamp(46px,9vw,84px);text-transform:uppercase}
+h2{font-size:clamp(30px,5vw,42px);text-transform:uppercase}
+h3{font-size:22px}
+p{margin:0 0 .8em;max-width:68ch}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+header.top{display:flex;flex-direction:column;gap:14px;padding-bottom:22px;border-bottom:2px solid var(--fg)}
+header.top p{font-size:18px;color:var(--muted)}
+nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+nav.toc a{font-family:var(--f-mono);font-size:13px;text-decoration:none;color:var(--fg);border:1px solid var(--line);background:var(--surface);padding:6px 12px;border-radius:4px}
+nav.toc a:hover{border-color:var(--accent);color:var(--accent)}
+section{padding-top:44px;display:flex;flex-direction:column;gap:18px}
+.sechead{display:flex;flex-direction:column;gap:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px 18px;min-width:0}
+.card h3{margin-bottom:6px}
+.card p:last-child{margin-bottom:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.facts div{background:var(--surface);padding:12px 14px}
+.facts b{display:block;font-family:var(--f-display);font-size:30px;line-height:1.1}
+.facts span{font-size:13px;color:var(--muted)}
+.note{border-left:4px solid var(--warn);background:var(--tint);padding:12px 16px;border-radius:0 6px 6px 0;font-size:15px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:9px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+tr:last-child td{border-bottom:0}
+kbd{font-family:var(--f-mono);font-size:13px;background:var(--tint);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:1px 7px;white-space:nowrap}
+.sticks{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.stick{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.stick svg{width:150px;height:150px;max-width:100%}
+.stick .lab{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.checks label{display:flex;gap:12px;align-items:flex-start;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:11px 14px}
+.checks input{width:20px;height:20px;margin-top:2px;accent-color:var(--accent);flex:none}
+.checks input:checked + span{color:var(--muted);text-decoration:line-through}
+.checks .grp{font-family:var(--f-display);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:.02em;margin-top:10px}
+.checks .grp:first-child{margin-top:0}
+.progress{font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.sources{font-size:14px;color:var(--muted)}
+.sources li{margin-bottom:4px}
+/* peli */
+.game{background:#0b1d2b;color:#e8f1f6;border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:10px;--g-accent:#ff8a4c}
+.gbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.levels{display:flex;flex-wrap:wrap;gap:6px}
+.levels button,.gbtn{font-family:var(--f-mono);font-size:13px;color:#e8f1f6;background:#16314a;border:1px solid #2c5071;border-radius:4px;padding:7px 12px;cursor:pointer}
+.levels button[aria-pressed="true"]{background:var(--g-accent);color:#1a0d05;border-color:var(--g-accent)}
+.levels button:hover,.gbtn:hover{border-color:var(--g-accent)}
+.stage{position:relative;aspect-ratio:16/9;width:100%;background:#7fb4d8;border-radius:6px;overflow:hidden}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hud{position:absolute;left:10px;top:8px;right:10px;display:flex;justify-content:space-between;gap:10px;font-family:var(--f-mono);font-size:clamp(11px,1.8vw,14px);pointer-events:none;text-shadow:0 1px 2px rgba(0,0,0,.6);color:#fff}
+.hud .l,.hud .r{display:flex;flex-direction:column;gap:2px}
+.hud .r{text-align:right}
+.hud .warn{color:#ffd43b}
+.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(6,18,28,.72);padding:16px;text-align:center}
+.overlay[hidden]{display:none!important}
+.overlay .box{max-width:460px;display:flex;flex-direction:column;gap:10px;align-items:center}
+.overlay h3{font-size:34px;text-transform:uppercase}
+.overlay p{color:#c9dbe6;margin:0}
+.gbtn.primary{background:var(--g-accent);color:#1a0d05;border-color:var(--g-accent);font-size:15px;padding:9px 20px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:#b7cddb}
+.legend kbd{background:#16314a;border-color:#2c5071;color:#e8f1f6}
+.overlay .eyebrow{color:#9fc0d4}
+.overlay .stars{font-size:30px;color:#ffd43b;letter-spacing:.1em}
+.touchnote{display:none}
+@media (pointer:coarse){.touchnote{display:block}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+<div class="wrap">
+<header class="top">
+  <span class="eyebrow">DJI Neo · Suomi · lennätysopas ja harjoituspeli</span>
+  <h1>Neo-lentokoulu</h1>
+  <p>Käy läpi Suomen säännöt, opettele ohjaimen logiikka ja harjoittele lentämistä selaimessa ennen kuin nostat oikean Neon ilmaan.</p>
+  <nav class="toc" aria-label="Sisällys">
+    <a href="#saannot">1 Säännöt</a><a href="#ohjaus">2 Ohjaus</a><a href="#tarkistus">3 Tarkistuslista</a><a href="#peli">4 Peli</a>
+  </nav>
+</header>
+
+<section id="saannot">
+  <div class="sechead"><span class="eyebrow">Osa 1</span><h2>Säännöt Suomessa</h2></div>
+  <div class="facts">
+    <div><b>135 g</b><span>lentoonlähtömassa</span></div>
+    <div><b>C0</b><span>EU-luokka</span></div>
+    <div><b>120 m</b><span>suurin lentokorkeus</span></div>
+    <div><b>8 m/s</b><span>tuulenkesto (Neo)</span></div>
+    <div><b>~18 min</b><span>lentoaika</span></div>
+  </div>
+  <div class="grid">
+    <div class="card"><h3>Kokeen tarve</h3>
+      <p>Alle 250 g dronea saa lennättää avoimen luokan A1-alakategoriassa. Siihen ei vaadita tutkintoa, mutta käyttöohje on luettava. Traficomin verkkoteoriakoe on silti hyvä tapa oppia säännöt.</p></div>
+    <div class="card"><h3>Korkeus ja näköyhteys</h3>
+      <p>Avoimessa kategoriassa lennetään enintään 120 metrin korkeudessa ja koko ajan suorassa näköyhteydessä dronen sijaintiin. Neossa ei ole esteenvälttelyä, joten lennä avoimessa tilassa ja katso itse ympärillesi.</p></div>
+    <div class="card"><h3>Ihmiset ja väkijoukot</h3>
+      <p>Pidä drone turvallisen välimatkan päässä ihmisistä. Väkijoukon yläpuolella ei lennetä. C0-luokan dronella saa lentää yksittäisten ulkopuolisten ihmisten yli, mutta vältä sitä silti, vaikka Neon potkurit ovat suojattuja.</p></div>
+    <div class="card"><h3>Ilmatila</h3>
+      <p>Tarkista ennen lentoa ilmailun kielto-, rajoitus- ja vaara-alueet sekä UAS-ilmatilavyöhykkeet. Lentokenttien ja sotilasalueiden lähellä lentäminen voi olla kiellettyä. Kartat ja ajantasaiset ohjeet löytyvät osoitteesta droneinfo.fi.</p></div>
+    <div class="card"><h3>Ikä ja vakuutus</h3>
+      <p>DJI suosittelee Neoa 16 vuotta täyttäneille. Lakisääteinen vakuutuspakko koskee vasta yli 20 kg:n droneja, mutta vastuuvakuutus on suositeltava kaikille harrastajille.</p></div>
+  </div>
+  <p class="note">Tämä opas ei ole virallinen ohje, ja säännöt muuttuvat. Tarkista aina ajantasainen tieto osoitteesta <a href="https://droneinfo.fi" target="_blank" rel="noopener">droneinfo.fi</a> ennen lentoa.</p>
+</section>
+
+<section id="ohjaus">
+  <div class="sechead"><span class="eyebrow">Osa 2</span><h2>Ohjaus ja lennätys</h2></div>
+  <p>Neon RC-N3-ohjaimessa on kaksi sauvaa. Yleisimmässä Mode 2 -asetuksessa vasen sauva ohjaa korkeutta ja kääntöä, oikea sauva liikettä eteen, taakse ja sivuille. Pelin näppäimet noudattavat samaa jakoa.</p>
+  <div class="sticks">
+    <div class="card stick">
+      <svg viewBox="0 0 150 150" role="img" aria-label="Vasen sauva: ylös ja alas korkeus, vasen ja oikea kääntö">
+        <circle cx="75" cy="75" r="62" fill="none" stroke="currentColor" stroke-opacity=".35" stroke-width="2"/>
+        <path d="M75 20v110M20 75h110" stroke="currentColor" stroke-opacity=".25"/>
+        <circle cx="75" cy="75" r="14" fill="var(--accent)"/>
+        <text x="75" y="16" text-anchor="middle" font-size="11" fill="currentColor" font-family="IBM Plex Mono,monospace">YLÖS</text>
+        <text x="75" y="146" text-anchor="middle" font-size="11" fill="currentColor" font-family="IBM Plex Mono,monospace">ALAS</text>
+        <text x="4" y="79" font-size="11" fill="currentColor" font-family="IBM Plex Mono,monospace">⟲</text>
+        <text x="132" y="79" font-size="11" fill="currentColor" font-family="IBM Plex Mono,monospace">⟳</text>
+      </svg>
+      <span class="lab">Vasen sauva</span>
+      <p><kbd>W</kbd> nousu · <kbd>S</kbd> lasku<br><kbd>A</kbd> kierto vasemmalle · <kbd>D</kbd> kierto oikealle</p>
+    </div>
+    <div class="card stick">
+      <svg viewBox="0 0 150 150" role="img" aria-label="Oikea sauva: eteen, taakse ja sivuille">
+        <circle cx="75" cy="75" r="62" fill="none" stroke="currentColor" stroke-opacity=".35" stroke-width="2"/>
+        <path d="M75 20v110M20 75h110" stroke="currentColor" stroke-opacity=".25"/>
+        <circle cx="75" cy="75" r="14" fill="var(--accent)"/>
+        <text x="75" y="16" text-anchor="middle" font-size="11" fill="currentColor" font-family="IBM Plex Mono,monospace">ETEEN</text>
+        <text x="75" y="146" text-anchor="middle" font-size="11" fill="currentColor" font-family="IBM Plex Mono,monospace">TAAKSE</text>
+        <text x="4" y="79" font-size="11" fill="currentColor" font-family="IBM Plex Mono,monospace">←</text>
+        <text x="132" y="79" font-size="11" fill="currentColor" font-family="IBM Plex Mono,monospace">→</text>
+      </svg>
+      <span class="lab">Oikea sauva</span>
+      <p><kbd>↑</kbd> eteen · <kbd>↓</kbd> taakse<br><kbd>←</kbd> vasemmalle · <kbd>→</kbd> oikealle</p>
+    </div>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Lentotila</th><th>Nousu</th><th>Lasku</th><th>Käyttö</th></tr></thead>
+    <tbody>
+      <tr><td>Cine</td><td>0,5 m/s</td><td>0,5 m/s</td><td>Rauhallinen kuvaus</td></tr>
+      <tr><td>Normal</td><td>2 m/s</td><td>2 m/s</td><td>Perusharjoittelu</td></tr>
+      <tr><td>Sport</td><td>3 m/s</td><td>2 m/s</td><td>Nopeat liikkeet, vaatii tarkkuutta</td></tr>
+    </tbody></table></div>
+  <div class="grid">
+    <div class="card"><h3>Lennon alku</h3><p>Aseta drone tasaiselle alustalle nokka poispäin itsestäsi. Nosta se 2–3 metrin korkeuteen ja pidä paikallaan, kunnes sauvojen liikkeet tuntuvat luontevilta.</p></div>
+    <div class="card"><h3>Pehmeät liikkeet</h3><p>Pienet ja tasaiset sauvaliikkeet toimivat paremmin kuin nykäisyt. Päästä sauvat keskelle, kun haluat pysähtyä. Neo pysyy vision-paikannuksella hyvin paikallaan.</p></div>
+    <div class="card"><h3>Nokka kohti itseäsi</h3><p>Kun drone tulee sinua kohti, vasen ja oikea kääntyvät ohjaajan näkökulmasta toisin päin. Harjoittele tätä pelissä ennen oikeaa lentoa.</p></div>
+    <div class="card"><h3>Tuuli</h3><p>Neo kestää tuulta 8 m/s asti, mutta kevyt kone ajautuu helposti. Lähde ulos vain tyynellä säällä, ja pidä paluulle varaa.</p></div>
+  </div>
+</section>
+
+<section id="tarkistus">
+  <div class="sechead"><span class="eyebrow">Osa 3</span><h2>Ennen lentoa</h2></div>
+  <p class="progress" id="chkProg">0 / 8 tehty</p>
+  <ul class="checks" id="checks"></ul>
+</section>
+
+<section id="peli">
+  <div class="sechead"><span class="eyebrow">Osa 4</span><h2>Lentoharjoitus</h2></div>
+  <p>Pelin mittakaava ja nopeudet ovat suuntaa antavia. Tavoite on opetella sauvojen yhteistyötä: pidä korkeus, kierrä esteet ja laskeudu hallitusti.</p>
+  <p class="note touchnote">Peli tarvitsee näppäimistön. Avaa sivu tietokoneella.</p>
+  <div class="game">
+    <div class="gbar">
+      <div class="levels" id="levels" role="group" aria-label="Valitse rata"></div>
+      <div class="levels" role="group" aria-label="Lentotila">
+        <button type="button" data-mode="0" aria-pressed="false">Cine</button>
+        <button type="button" data-mode="1" aria-pressed="true">Normal</button>
+        <button type="button" data-mode="2" aria-pressed="false">Sport</button>
+      </div>
+    </div>
+    <div class="stage" id="stage">
+      <canvas id="cv" aria-label="Pelinäkymä"></canvas>
+      <div class="hud"><div class="l" id="hudL"></div><div class="r" id="hudR"></div></div>
+      <div class="overlay" id="ov"><div class="box" id="ovBox"></div></div>
+    </div>
+    <div class="legend">
+      <span><kbd>W</kbd><kbd>S</kbd> korkeus</span><span><kbd>A</kbd><kbd>D</kbd> kierto</span>
+      <span><kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> liike</span>
+      <span><kbd>C</kbd> kamera</span><span><kbd>R</kbd> aloita alusta</span><span><kbd>P</kbd> tauko</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h3>Lähteet</h3>
+  <ul class="sources">
+    <li><a href="https://www.traficom.fi/fi/miehittamaton-ilmailu/mita-saantoja-ilmassa-ilmailun-saadokset" target="_blank" rel="noopener">Traficom: Mitä sääntöjä on ilmassa?</a></li>
+    <li><a href="https://www.fintraffic.fi/fi/uutiset/fintraffic-ohjeistaa-nain-lennatat-dronea-turvallisesti" target="_blank" rel="noopener">Fintraffic: Näin lennätät dronea turvallisesti</a></li>
+    <li><a href="https://www.dji.com/global/mobile/neo/specs" target="_blank" rel="noopener">DJI Neo: tekniset tiedot</a></li>
+  </ul>
+</section>
+</div>
+<script>
+/* ---------- Tarkistuslista ---------- */
+(function(){
+  var groups=[
+    {t:"Varusteet",i:["Dronen akku sekä puhelin ja ohjain on ladattu.","DJI Fly -sovellus ja dronen laiteohjelmisto on päivitetty.","Gimbalin suojus on poistettu kamerasta.","Muistissa on tilaa (Neon sisäinen muisti 22 GB, ei korttipaikkaa).","Potkurit ovat ehjät ja suojat paikallaan.","Akku ei ole kylmä: latauslämpötila 5–40 °C, pakkasella pidä akku lämpimänä."]},
+    {t:"Paikka ja sää",i:["Sää on sopiva: tuuli alle 8 m/s, ei sadetta, lämpötila -10…40 °C.","Paikka on avoin, eikä lähellä ole ihmisjoukkoja.","Lähellä ei ole lentokenttää, sotilasaluetta tai muuta rajoitusaluetta.","Alusta on tasainen ja puhdas, eikä ruoho osu potkureihin.","Valaistus on riittävä: paikannus tarvitsee noin 15 luksia, eli tavallisen sisävalon.","Laskeutumispaikka on vapaa."]},
+    {t:"Minä ja lento",i:["Näen dronen koko ajan suoraan, myös lennon aikana.","Lennän alle 50 metrin korkeudessa.","Päätän etukäteen paluurajan akulle, esimerkiksi 30 %.","Kuvaan vain, kun kuvattavat tietävät siitä, enkä kuvaa pihoja tai ikkunoita."]}
+  ];
+  var ul=document.getElementById("checks"),prog=document.getElementById("chkProg"),total=0;
+  groups.forEach(function(g){total+=g.i.length;});
+  function upd(){var n=ul.querySelectorAll("input:checked").length;prog.textContent=n+" / "+total+" tehty"+(n===total?" · valmis lentoon":"");}
+  var k=0;
+  groups.forEach(function(g){
+    var h=document.createElement("li");h.className="grp";h.textContent=g.t;ul.appendChild(h);
+    g.i.forEach(function(t){var li=document.createElement("li");var lb=document.createElement("label");var inp=document.createElement("input");inp.type="checkbox";inp.id="chk"+(k++);inp.addEventListener("change",upd);var sp=document.createElement("span");sp.textContent=t;lb.appendChild(inp);lb.appendChild(sp);li.appendChild(lb);ul.appendChild(li);});
+  });
+  upd();
+})();
+
+/* ---------- Pelimoottori ---------- */
+var Eng=(function(){
+  var cv=document.getElementById("cv"),ctx=cv.getContext("2d");
+  var W=800,H=450,F=400;
+  var cam={x:0,y:2,z:-4,yaw:0,pitch:0.2,cy:1,sy:0,cp:1,sp:0};
+  function resize(){
+    var r=cv.getBoundingClientRect();if(!r.width)return;
+    var dpr=Math.min(2,window.devicePixelRatio||1);
+    W=r.width;H=r.height;F=H*0.95;
+    cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  if(window.ResizeObserver){new ResizeObserver(resize).observe(cv);}
+  window.addEventListener("resize",resize);resize();
+
+  function setCam(x,y,z,yaw,pitch){
+    cam.x=x;cam.y=y;cam.z=z;cam.yaw=yaw;cam.pitch=pitch;
+    cam.cy=Math.cos(yaw);cam.sy=Math.sin(yaw);cam.cp=Math.cos(pitch);cam.sp=Math.sin(pitch);
+  }
+  function toCam(p){
+    var dx=p[0]-cam.x,dy=p[1]-cam.y,dz=p[2]-cam.z;
+    var xr=dx*cam.cy-dz*cam.sy,zf=dx*cam.sy+dz*cam.cy;
+    return [xr,dy*cam.cp+zf*cam.sp,zf*cam.cp-dy*cam.sp];
+  }
+  var NEAR=0.2;
+  function clipPoly(pts){
+    var out=[];
+    for(var i=0;i<pts.length;i++){
+      var a=pts[i],b=pts[(i+1)%pts.length];
+      var ain=a[2]>=NEAR,bin=b[2]>=NEAR;
+      if(ain)out.push(a);
+      if(ain!==bin){var t=(NEAR-a[2])/(b[2]-a[2]);out.push([a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,NEAR]);}
+    }
+    return out;
+  }
+  function scr(c){return [W/2+c[0]/c[2]*F,H/2-c[1]/c[2]*F];}
+  function poly(wpts,fill,stroke,lw){
+    var c=clipPoly(wpts.map(toCam));
+    if(c.length<3)return;
+    ctx.beginPath();
+    for(var i=0;i<c.length;i++){var s=scr(c[i]);if(i)ctx.lineTo(s[0],s[1]);else ctx.moveTo(s[0],s[1]);}
+    ctx.closePath();
+    if(fill){ctx.fillStyle=fill;ctx.fill();}
+    if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||1;ctx.stroke();}
+  }
+  function line(a,b,color,width,scaleW){
+    var ca=toCam(a),cb=toCam(b);
+    if(ca[2]<NEAR&&cb[2]<NEAR)return;
+    if(ca[2]<NEAR){var t=(NEAR-ca[2])/(cb[2]-ca[2]);ca=[ca[0]+(cb[0]-ca[0])*t,ca[1]+(cb[1]-ca[1])*t,NEAR];}
+    else if(cb[2]<NEAR){var t2=(NEAR-cb[2])/(ca[2]-cb[2]);cb=[cb[0]+(ca[0]-cb[0])*t2,cb[1]+(ca[1]-cb[1])*t2,NEAR];}
+    var sa=scr(ca),sb=scr(cb);
+    var w=width;
+    if(scaleW){var d=(ca[2]+cb[2])/2;w=Math.max(1.5,scaleW*F/d);}
+    ctx.beginPath();ctx.moveTo(sa[0],sa[1]);ctx.lineTo(sb[0],sb[1]);
+    ctx.strokeStyle=color;ctx.lineWidth=w;ctx.lineCap="round";ctx.stroke();
+    function noop(){}
+  }
+  var width=1;
+  function shade(hex,f){
+    var n=parseInt(hex.slice(1),16),r=(n>>16)&255,g=(n>>8)&255,b=n&255;
+    return "rgb("+Math.round(r*f)+","+Math.round(g*f)+","+Math.round(b*f)+")";
+  }
+  function circle3(c,r,plane,n,ang){
+    var pts=[];
+    for(var i=0;i<n;i++){
+      var t=i/n*Math.PI*2,cs=Math.cos(t)*r,sn=Math.sin(t)*r;
+      if(plane==="h")pts.push([c[0]+cs,c[1],c[2]+sn]);
+      else{var ux=Math.cos(ang),uz=-Math.sin(ang);pts.push([c[0]+ux*cs,c[1]+sn,c[2]+uz*cs]);}
+    }
+    return pts;
+  }
+  function ringStroke(pts,color,sw){
+    for(var i=0;i<pts.length;i++){line(pts[i],pts[(i+1)%pts.length],color,1,sw);}
+  }
+  function prism(x,z,r,h,n,color,topColor,yoff){
+    var y0=yoff||0,faces=[];
+    for(var i=0;i<n;i++){
+      var a0=i/n*Math.PI*2,a1=(i+1)/n*Math.PI*2;
+      var p0=[x+Math.cos(a0)*r,z+Math.sin(a0)*r],p1=[x+Math.cos(a1)*r,z+Math.sin(a1)*r];
+      var mx=(p0[0]+p1[0])/2,mz=(p0[1]+p1[1])/2;
+      var d=(mx-cam.x)*(mx-cam.x)+(mz-cam.z)*(mz-cam.z);
+      var lf=0.6+0.4*Math.cos(a0+0.8);
+      faces.push({d:d,pts:[[p0[0],y0,p0[1]],[p1[0],y0,p1[1]],[p1[0],y0+h,p1[1]],[p0[0],y0+h,p0[1]]],f:lf});
+    }
+    faces.sort(function(a,b){return b.d-a.d;});
+    faces.forEach(function(f){poly(f.pts,shade(color,f.f),null);});
+    if(topColor){var tp=[];for(var k=0;k<n;k++){var a=k/n*Math.PI*2;tp.push([x+Math.cos(a)*r,y0+h,z+Math.sin(a)*r]);}poly(tp,topColor,null);}
+  }
+  function box(x0,x1,z0,z1,h,color,topColor){
+    var P=[[x0,z0],[x1,z0],[x1,z1],[x0,z1]];
+    var faces=[];
+    for(var i=0;i<4;i++){
+      var a=P[i],b=P[(i+1)%4],mx=(a[0]+b[0])/2,mz=(a[1]+b[1])/2;
+      faces.push({d:(mx-cam.x)*(mx-cam.x)+(mz-cam.z)*(mz-cam.z),pts:[[a[0],0,a[1]],[b[0],0,b[1]],[b[0],h,b[1]],[a[0],h,a[1]]],f:[0.8,0.65,0.95,0.55][i]});
+    }
+    faces.sort(function(p,q){return q.d-p.d;});
+    faces.forEach(function(f){poly(f.pts,shade(color,f.f),null);});
+    poly([[x0,h,z0],[x1,h,z0],[x1,h,z1],[x0,h,z1]],topColor||shade(color,1.1),null);
+  }
+  function cone(x,z,r,y0,h,n,color){
+    var faces=[];
+    for(var i=0;i<n;i++){
+      var a0=i/n*Math.PI*2,a1=(i+1)/n*Math.PI*2;
+      var p0=[x+Math.cos(a0)*r,z+Math.sin(a0)*r],p1=[x+Math.cos(a1)*r,z+Math.sin(a1)*r];
+      var mx=(p0[0]+p1[0])/2,mz=(p0[1]+p1[1])/2;
+      faces.push({d:(mx-cam.x)*(mx-cam.x)+(mz-cam.z)*(mz-cam.z),pts:[[p0[0],y0,p0[1]],[p1[0],y0,p1[1]],[x,y0+h,z]],f:0.55+0.45*Math.cos(a0+0.8)});
+    }
+    faces.sort(function(a,b){return b.d-a.d;});
+    faces.forEach(function(f){poly(f.pts,shade(color,Math.max(.45,f.f)),null);});
+  }
+  function drawDrone(d,spin){
+    var cy=Math.cos(d.yaw),sy=Math.sin(d.yaw);
+    function L(rx,rz,y){return [d.x+rx*cy+rz*sy,d.y+y,d.z-rx*sy+rz*cy];}
+    var bw=0.17,bl=0.2;
+    var props=[[-0.34,0.36],[0.34,0.36],[-0.34,-0.36],[0.34,-0.36]];
+    props.forEach(function(p){
+      var c=L(p[0],p[1],0.12),pts=[];
+      for(var i=0;i<10;i++){var t=i/10*Math.PI*2;pts.push([c[0]+Math.cos(t)*0.2,c[1],c[2]+Math.sin(t)*0.2]);}
+      poly(pts,"rgba(30,40,50,0.28)","rgba(20,30,40,0.8)",1.2);
+      line(L(p[0]*0.4,p[1]*0.4,0.08),c,"#22313b",1);
+    });
+    poly([L(-bw,-bl,0.02),L(bw,-bl,0.02),L(bw,bl,0.02),L(-bw,bl,0.02)],"#3a4650","#10171c",1);
+    poly([L(-bw,-bl,0.02),L(bw,-bl,0.02),L(bw,-bl,0.14),L(-bw,-bl,0.14)],"#232d34",null);
+    poly([L(-bw,-bl,0.14),L(bw,-bl,0.14),L(bw*0.8,bl,0.14),L(-bw*0.8,bl,0.14)],"#566470","#10171c",1);
+    poly([L(-0.07,bl+0.01,0.1),L(0.07,bl+0.01,0.1),L(0,bl+0.2,0.12)],"#ff6a1f",null);
+  }
+  function sortKey(o,x,z){var dx=o.x-cam.x,dz=o.z-cam.z;return dx*dx+dz*dz;}
+  function sky(env){
+    var g=ctx.createLinearGradient(0,0,0,H);
+    if(env==="hall"){g.addColorStop(0,"#2b3640");g.addColorStop(1,"#46535e");}
+    else{g.addColorStop(0,"#5fa0d0");g.addColorStop(0.6,"#a9d0e8");g.addColorStop(1,"#cfe3ef");}
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  }
+  function ground(env){
+    var S=500,cx=Math.round(cam.x/10)*10,cz=Math.round(cam.z/10)*10;
+    poly([[cx-S,0,cz-S],[cx+S,0,cz-S],[cx+S,0,cz+S],[cx-S,0,cz+S]],env==="hall"?"#3b444b":"#5f8a4f",null);
+    var step=env==="hall"?2:5,R=env==="hall"?60:70;
+    var gx=Math.floor(cam.x/step)*step,gz=Math.floor(cam.z/step)*step;
+    var col=env==="hall"?"rgba(255,255,255,0.10)":"rgba(255,255,255,0.18)";
+    for(var i=-R;i<=R;i+=step){
+      line([gx+i,0.001,cz-R],[gx+i,0.001,cz+R],col,1);
+      line([cx-R,0.001,gz+i],[cx+R,0.001,gz+i],col,1);
+    }
+  }
+  return {ctx:ctx,setCam:setCam,toCam:toCam,scr:scr,poly:poly,line:line,circle3:circle3,ringStroke:ringStroke,prism:prism,box:box,cone:cone,drone:drawDrone,sky:sky,ground:ground,sortKey:sortKey,size:function(){return {W:W,H:H};},setLineWidth:function(w){width=w;},canvas:cv};
+})();
+/* ---------- Radat ---------- */
+var Levels=(function(){
+  function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+  function trees(seed,n,x0,x1,z0,z1,avoid,minD){
+    var r=rng(seed),out=[],tries=0;
+    while(out.length<n&&tries<n*30){
+      tries++;
+      var x=x0+r()*(x1-x0),z=z0+r()*(z1-z0),ok=true;
+      for(var i=0;i<avoid.length;i++){var dx=x-avoid[i][0],dz=z-avoid[i][1];if(dx*dx+dz*dz<minD*minD){ok=false;break;}}
+      if(ok)out.push({t:"tree",x:x,z:z,r:0.8,h:6});
+    }
+    return out;
+  }
+  function gate(x,y,z,deg,R){return {k:"gate",x:x,y:y,z:z,a:deg*Math.PI/180,R:R||2,txt:"Lennä oranssin renkaan läpi"};}
+  function pylon(x,z){return {t:"cyl",x:x,z:z,r:0.4,h:7,color:"#e8590c"};}
+  var list=[];
+
+  // 1
+  (function(){
+    var tasks=[
+      {k:"hold",x:0,y:3,z:0,r:1.5,T:3,txt:"Nouse 3 m ja leijuta lähtömerkin yllä 3 s"},
+      {k:"hold",x:5,y:3,z:6,r:1.5,T:3,txt:"Lennä toiseen merkkiin ja leijuta 3 s"},
+      {k:"land",x:0,z:0,hs:1.3,txt:"Laskeudu lähtömerkille"}
+    ];
+    list.push({id:"l1",name:"1 Leijunta ja lasku",env:"out",ceil:0,wind:0,par:50,start:{x:0,z:0,yaw:0},tasks:tasks,
+      objs:trees(11,22,-30,30,-12,40,[[0,0],[0,6],[6,6]],7),
+      desc:"Nouse ilmaan (W), siirry merkkien sisään ja pidä drone paikallaan. Laskeudu lopuksi lähtömerkille pienellä laskunopeudella."});
+  })();
+
+  // 2
+  (function(){
+    var tasks=[gate(0,2.5,10,0),gate(5,3,20,30),gate(12,2.5,27,60),gate(20,3.5,28,105),gate(27,2.5,22,160),gate(26,3,12,190),
+      {k:"land",x:22,z:3,hs:1.4,txt:"Laskeudu maalimerkille"}];
+    var avoid=[[0,0]];tasks.forEach(function(t){avoid.push([t.x,t.z]);});
+    list.push({id:"l2",name:"2 Renkaat",env:"out",ceil:0,wind:0,par:95,start:{x:0,z:0,yaw:0},tasks:tasks,
+      objs:trees(22,34,-12,42,-10,42,avoid,6),
+      desc:"Lennä renkaiden läpi järjestyksessä. Seuraava rengas on oranssi. Käännä dronea vasemmalla sauvalla (A ja D) ja ohjaa oikealla sauvalla."});
+  })();
+
+  // 3
+  (function(){
+    var objs=[];
+    for(var z=-4;z<52;z+=8){
+      objs.push({t:"box",x0:-7,x1:-6,z0:z,z1:z+8,h:6,color:"#6b7b86"});
+      objs.push({t:"box",x0:6,x1:7,z0:z,z1:z+8,h:6,color:"#6b7b86"});
+    }
+    objs.push({t:"box",x0:-7,x1:7,z0:52,z1:53,h:6,color:"#6b7b86"});
+    objs.push({t:"box",x0:-7,x1:7,z0:-5,z1:-4,h:6,color:"#6b7b86"});
+    objs.push({t:"box",x0:-6,x1:2,z0:10,z1:11,h:4,color:"#e8590c"});
+    objs.push({t:"box",x0:-2,x1:6,z0:19,z1:20,h:4,color:"#2f9e44"});
+    objs.push({t:"box",x0:-6,x1:2,z0:28,z1:29,h:4,color:"#e8590c"});
+    objs.push({t:"box",x0:-2,x1:6,z0:37,z1:38,h:4,color:"#2f9e44"});
+    var tasks=[gate(4,2,10.5,0,1.8),gate(-4,2,19.5,0,1.8),gate(4,2,28.5,0,1.8),gate(-4,2,37.5,0,1.8),
+      {k:"land",x:0,z:46,hs:1.5,txt:"Laskeudu hallin päätyyn"}];
+    list.push({id:"l3",name:"3 Sisähalli",env:"hall",ceil:4,wind:0,par:70,start:{x:0,z:0,yaw:0},tasks:tasks,objs:objs,
+      desc:"Hallin katto on 4 m, joten esteiden yli ei pääse. Pujottele aukkojen läpi vuorotellen oikealta ja vasemmalta. Törmäys antaa 5 s lisäaikaa."});
+  })();
+
+  // 4
+  (function(){
+    var G=[gate(0,3,12,0),gate(-5,4,25,-12),gate(3,3,38,15),gate(0,5,50,0)];
+    var objs=[];
+    G.forEach(function(g){objs.push(pylon(g.x-2.6,g.z));objs.push(pylon(g.x+2.6,g.z));});
+    objs.push({t:"box",x0:-14,x1:-8,z0:30,z1:33,h:2.5,color:"#2f9e44"});
+    objs.push({t:"box",x0:4,x1:10,z0:18,z1:21,h:2.5,color:"#2f9e44"});
+    objs.push({t:"box",x0:-4,x1:2,z0:42,z1:45,h:2.5,color:"#2f9e44"});
+    var tasks=G.concat([{k:"land",x:0,z:60,hs:1.4,txt:"Laskeudu tuulessa maalimerkille"}]);
+    var avoid=[[0,0],[0,60]];G.forEach(function(g){avoid.push([g.x,g.z]);});
+    list.push({id:"l4",name:"4 Tuuli ja maasto",env:"out",ceil:0,wind:1.6,par:100,start:{x:0,z:0,yaw:0},tasks:tasks,
+      objs:objs.concat(trees(44,36,-22,22,-8,70,avoid,7)),
+      desc:"Tuulenpuuskat työntävät konetta. Korjaa ajautumista pienillä sauvaliikkeillä ja lennä renkaiden läpi pylväiden välistä."});
+  })();
+
+  // vapaa
+  list.push({id:"free",name:"5 Lippujahti",env:"out",ceil:0,wind:0,par:0,free:true,roundT:120,start:{x:0,z:0,yaw:0},tasks:[],
+    objs:trees(77,60,-60,60,-30,90,[[0,0]],5).concat([pylon(8,12),pylon(-8,16),pylon(0,26)]),
+    desc:"Kerää lippuja 120 sekunnin ajan. Keltainen on 1 piste, oranssi 2 ja punainen 3 pistettä. Kauempana ja korkeammalla olevat liput antavat enemmän. Kun kaikki on kerätty, ilmestyy uusi sarja."});
+  return list;
+})();
+/* ---------- Pelilogiikka ---------- */
+(function(){
+  var E=Eng,ctx=E.ctx,PI=Math.PI;
+  var MODES=[{h:3,up:0.5,down:0.5,yaw:60},{h:6,up:2,down:2,yaw:100},{h:10,up:3,down:2,yaw:150}];
+  var S={lv:null,mode:1,state:"ready",d:null,t:0,pen:0,crash:0,ti:0,hold:0,cool:0,view:0,camYaw:0,msg:"",msgT:0,landed:true,clock:0,inp:{ay:0,yw:0,af:0,ax:0}};
+  var keys={};
+  var ov=document.getElementById("ov"),ovBox=document.getElementById("ovBox");
+  var hudL=document.getElementById("hudL"),hudR=document.getElementById("hudR");
+  var levelsEl=document.getElementById("levels");
+
+  function el(tag,txt,cls){var e=document.createElement(tag);if(txt)e.textContent=txt;if(cls)e.className=cls;return e;}
+  function best(id){try{var v=localStorage.getItem("neo-best-"+id);return v?parseFloat(v):null;}catch(e){return null;}}
+  function saveBest(id,v){try{localStorage.setItem("neo-best-"+id,String(v));}catch(e){}}
+  function fmt(t){var m=Math.floor(t/60),s=t-m*60;return m+":"+(s<10?"0":"")+s.toFixed(1);}
+
+  /* --- valikko --- */
+  Levels.forEach(function(lv,i){
+    var b=el("button",lv.name);b.type="button";b.setAttribute("aria-pressed",i===0?"true":"false");
+    b.addEventListener("click",function(){load(i);b.blur();});levelsEl.appendChild(b);
+  });
+  document.querySelectorAll("[data-mode]").forEach(function(b){
+    b.addEventListener("click",function(){
+      S.mode=+b.getAttribute("data-mode");
+      document.querySelectorAll("[data-mode]").forEach(function(o){o.setAttribute("aria-pressed",o===b?"true":"false");});
+      b.blur();
+    });
+  });
+
+  /* --- lataus --- */
+  function load(i){
+    var lv=Levels[i];S.lv=lv;S.idx=i;
+    S.d={x:lv.start.x,y:0,z:lv.start.z,yaw:lv.start.yaw,vx:0,vy:0,vz:0};
+    S.camYaw=S.d.yaw;S.t=0;S.pen=0;S.crash=0;S.ti=0;S.hold=0;S.cool=0;S.landed=true;S.msg="";S.msgT=0;
+    S.score=0;S.flags=lv.free?genFlags(lv):[];
+    levelsEl.querySelectorAll("button").forEach(function(b,k){b.setAttribute("aria-pressed",k===i?"true":"false");});
+    showStart();
+  }
+  function showOv(){ov.hidden=false;}
+  function showStart(){
+    var lv=S.lv;S.state="ready";
+    ovBox.textContent="";
+    ovBox.appendChild(el("h3",lv.name.replace(/^\d\s/,"")));
+    ovBox.appendChild(el("p",lv.desc));
+    var b=best(lv.id);
+    if(!lv.free)ovBox.appendChild(el("p","Pariaika "+fmt(lv.par)+(b?" · Paras aikasi "+fmt(b):""),"eyebrow"));
+    else if(b)ovBox.appendChild(el("p","Ennätys "+Math.round(b)+" pistettä","eyebrow"));
+    var btn=el("button","Aloita (Enter)","gbtn primary");btn.type="button";btn.addEventListener("click",start);ovBox.appendChild(btn);
+    showOv();
+  }
+  function start(){if(S.state!=="ready")return;S.state="play";ov.hidden=true;S.clock=performance.now();}
+  function restart(){load(S.idx);}
+  function pause(){
+    if(S.state==="play"){S.state="pause";ovBox.textContent="";ovBox.appendChild(el("h3","Tauko"));
+      var b=el("button","Jatka (P)","gbtn primary");b.type="button";b.addEventListener("click",pause);ovBox.appendChild(b);showOv();}
+    else if(S.state==="pause"){S.state="play";ov.hidden=true;}
+  }
+  function finish(){
+    var lv=S.lv,total=S.t+S.pen;S.state="done";
+    var stars=total<=lv.par?3:total<=lv.par*1.4?2:1;
+    var prev=best(lv.id),newBest=!prev||total<prev;if(newBest)saveBest(lv.id,total);
+    ovBox.textContent="";
+    ovBox.appendChild(el("h3","Rata suoritettu"));
+    ovBox.appendChild(el("p",new Array(stars+1).join("★")+new Array(4-stars).join("☆"),"stars"));
+    ovBox.appendChild(el("p","Aika "+fmt(S.t)+" + lisäaika "+S.pen+" s = "+fmt(total)));
+    ovBox.appendChild(el("p","Törmäyksiä "+S.crash+" · pariaika "+fmt(lv.par)+(newBest?" · uusi ennätys":"")));
+    var row=el("div");row.style.cssText="display:flex;gap:8px;flex-wrap:wrap;justify-content:center";
+    var again=el("button","Uudestaan (R)","gbtn");again.type="button";again.addEventListener("click",restart);row.appendChild(again);
+    if(S.idx<Levels.length-1){var nx=el("button","Seuraava rata","gbtn primary");nx.type="button";nx.addEventListener("click",function(){load(S.idx+1);});row.appendChild(nx);}
+    ovBox.appendChild(row);showOv();
+  }
+  function flash(t){S.msg=t;S.msgT=2.2;}
+
+  /* --- liput --- */
+  function genFlags(lv){
+    var out=[],specs=[{n:4,p:1,a:8,b:22,y0:2,y1:4},{n:4,p:2,a:22,b:45,y0:4,y1:10},{n:3,p:3,a:40,b:70,y0:1.5,y1:22}];
+    specs.forEach(function(sp){
+      var c=0,tr=0;
+      while(c<sp.n&&tr<300){
+        tr++;
+        var a=Math.random()*PI*2,r=sp.a+Math.random()*(sp.b-sp.a),x=Math.sin(a)*r,z=Math.cos(a)*r,y=sp.y0+Math.random()*(sp.y1-sp.y0),ok=true;
+        for(var i=0;i<lv.objs.length;i++){var o=lv.objs[i];if(o.t==="box")continue;var dx=x-o.x,dz=z-o.z;if(dx*dx+dz*dz<(o.r+2.6)*(o.r+2.6)&&y<o.h+1){ok=false;break;}}
+        if(ok){out.push({x:x,y:y,z:z,p:sp.p,got:false});c++;}
+      }
+    });
+    return out;
+  }
+  function finishFlags(){
+    var lv=S.lv;S.state="done";
+    var prev=best(lv.id),nb=!prev||S.score>prev;if(nb)saveBest(lv.id,S.score);
+    ovBox.textContent="";
+    ovBox.appendChild(el("h3","Aika loppui"));
+    ovBox.appendChild(el("p",S.score+" pistettä","stars"));
+    ovBox.appendChild(el("p","Törmäyksiä "+S.crash+(nb?" · uusi ennätys":prev?" · ennätys "+Math.round(prev):"")));
+    var again=el("button","Uudestaan (R)","gbtn primary");again.type="button";again.addEventListener("click",restart);ovBox.appendChild(again);
+    showOv();
+  }
+
+  /* --- syöte --- */
+  var GAMEKEYS={KeyW:1,KeyA:1,KeyS:1,KeyD:1,ArrowUp:1,ArrowDown:1,ArrowLeft:1,ArrowRight:1};
+  window.addEventListener("keydown",function(e){
+    if(e.ctrlKey||e.metaKey||e.altKey)return;
+    var c=e.code;
+    if(GAMEKEYS[c]){keys[c]=true;if(S.state==="play"||S.state==="pause")e.preventDefault();return;}
+    if((c==="Enter"||c==="Space")&&S.state==="ready"){e.preventDefault();start();return;}
+    if(c==="KeyR"&&S.state!=="ready"&&!e.repeat&&isGameActive()){restart();return;}
+    if(c==="KeyP"&&!e.repeat&&(S.state==="play"||S.state==="pause")){pause();return;}
+    if(c==="KeyC"&&!e.repeat&&isGameActive()){S.view=1-S.view;}
+  });
+  window.addEventListener("keyup",function(e){delete keys[e.code];});
+  window.addEventListener("blur",function(){keys={};if(S.state==="play")pause();});
+  function isGameActive(){var r=Eng.canvas.getBoundingClientRect();return S.state!=="ready"&&r.bottom>0&&r.top<window.innerHeight;}
+
+  /* --- törmäykset --- */
+  function hits(o,d){
+    if(o.t==="cyl"||o.t==="tree"){var dx=d.x-o.x,dz=d.z-o.z,r=o.r+0.38;return dx*dx+dz*dz<r*r&&d.y<o.h+0.15;}
+    if(o.t==="box"){return d.x>o.x0-0.38&&d.x<o.x1+0.38&&d.z>o.z0-0.38&&d.z<o.z1+0.38&&d.y<o.h+0.15;}
+    return false;
+  }
+
+  /* --- fysiikka --- */
+  function update(dt){
+    var lv=S.lv,d=S.d,m=MODES[S.mode];
+    var ay=(keys.KeyW?1:0)-(keys.KeyS?1:0),yw=(keys.KeyD?1:0)-(keys.KeyA?1:0);
+    var af=(keys.ArrowUp?1:0)-(keys.ArrowDown?1:0),ax=(keys.ArrowRight?1:0)-(keys.ArrowLeft?1:0);
+    S.inp={ay:ay,yw:yw,af:af,ax:ax};
+    if(S.state!=="play")return;
+    S.t+=dt;if(S.cool>0)S.cool-=dt;if(S.msgT>0)S.msgT-=dt;
+    if(lv.free&&S.t>=lv.roundT){finishFlags();return;}
+    var px=d.x,py=d.y,pz=d.z;
+    d.yaw+=yw*m.yaw*dt*PI/180;
+    if(S.landed){
+      d.vx=d.vy=d.vz=0;
+      if(ay>0)S.landed=false;else return;
+    }
+    var len=Math.hypot(ax,af),sx=ax,sf=af;if(len>1){sx/=len;sf/=len;}
+    var fx=Math.sin(d.yaw),fz=Math.cos(d.yaw),rx=Math.cos(d.yaw),rz=-Math.sin(d.yaw);
+    var tvx=(fx*sf+rx*sx)*m.h,tvz=(fz*sf+rz*sx)*m.h;
+    if(lv.wind){var w=lv.wind;tvx+=(Math.sin(S.t*0.5)+0.5*Math.sin(S.t*1.7))*w*0.5;tvz+=(Math.cos(S.t*0.37)+0.5*Math.sin(S.t*1.3))*w*0.5;}
+    var k=Math.min(1,dt*2.6);
+    d.vx+=(tvx-d.vx)*k;d.vz+=(tvz-d.vz)*k;
+    var tvy=ay>0?m.up:ay<0?-m.down:0;
+    d.vy+=(tvy-d.vy)*Math.min(1,dt*5);
+    d.x+=d.vx*dt;d.z+=d.vz*dt;d.y+=d.vy*dt;
+    if(d.y<=0){d.y=0;d.vy=0;if(ay<=0){S.landed=true;d.vx=d.vz=0;}}
+    if(lv.ceil&&d.y>lv.ceil-0.35){d.y=lv.ceil-0.35;if(d.vy>0)d.vy=0;if(ay>0)flash("Katto estää nousun");}
+    // törmäys
+    if(S.cool<=0){
+      for(var i=0;i<lv.objs.length;i++){
+        if(hits(lv.objs[i],d)){
+          d.x=px;d.y=py;d.z=pz;d.vx=d.vy=d.vz=0;
+          if(!lv.free){S.pen+=5;}
+          S.crash++;S.cool=0.9;flash(lv.free?"Törmäys":"Törmäys! +5 s");
+          break;
+        }
+      }
+    }
+    // tehtävät
+    var tk=lv.tasks[S.ti];
+    if(tk){
+      if(tk.k==="gate"){
+        var sn=Math.sin(tk.a),cs=Math.cos(tk.a);
+        var s0=(px-tk.x)*sn+(pz-tk.z)*cs,s1=(d.x-tk.x)*sn+(d.z-tk.z)*cs;
+        if(s0!==s1&&((s0<0&&s1>=0)||(s0>0&&s1<=0))){
+          var cx0=(px+d.x)/2,cz0=(pz+d.z)/2,cy0=(py+d.y)/2;
+          var lat=(cx0-tk.x)*cs-(cz0-tk.z)*sn,dy=cy0-tk.y,off=Math.hypot(lat,dy);
+          if(off<tk.R+0.1){S.ti++;flash("Rengas läpi");}
+          else if(off<tk.R+2.5)flash("Meni ohi renkaasta. Ohjaa keskemmälle ja yritä uudelleen");
+        }
+      }else if(tk.k==="hold"){
+        var dd=Math.hypot(d.x-tk.x,d.y-tk.y,d.z-tk.z);
+        if(dd<tk.r){S.hold+=dt;if(S.hold>=tk.T){S.ti++;S.hold=0;flash("Merkki suoritettu");}}else S.hold=0;
+      }else if(tk.k==="land"){
+        if(S.landed&&Math.abs(d.x-tk.x)<tk.hs&&Math.abs(d.z-tk.z)<tk.hs){S.ti++;}
+      }
+      if(!lv.free&&S.ti>=lv.tasks.length)finish();
+    }
+    if(lv.free){
+      var left=0;
+      S.flags.forEach(function(f){
+        if(f.got)return;
+        if(Math.hypot(d.x-f.x,d.y-f.y,d.z-f.z)<1.7){f.got=true;S.score+=f.p;flash("+"+f.p+" pistettä");}else left++;
+      });
+      if(!left){S.flags=genFlags(lv);flash("Uusi lippusarja");}
+    }
+  }
+
+  /* --- piirto --- */
+  function pad(x,z,hs,col){
+    E.poly([[x-hs,0.004,z-hs],[x+hs,0.004,z-hs],[x+hs,0.004,z+hs],[x-hs,0.004,z+hs]],col,"#ffffff",2);
+    var h=hs*0.5,g="#ffffff";
+    E.line([x-h,0.006,z-h],[x-h,0.006,z+h],g,3);E.line([x+h,0.006,z-h],[x+h,0.006,z+h],g,3);E.line([x-h,0.006,z],[x+h,0.006,z],g,3);
+  }
+  function marker(tg,dist,W,H){
+    var c=E.toCam([tg.x,tg.y,tg.z]),sx,sy,on=false;
+    if(c[2]>0.5){var s=E.scr(c);sx=s[0];sy=s[1];on=sx>24&&sx<W-24&&sy>50&&sy<H-24;}
+    else{sx=c[0]>=0?W+50:-50;sy=H/2;}
+    ctx.save();ctx.font="12px 'IBM Plex Mono',monospace";ctx.textAlign="center";
+    ctx.shadowColor="rgba(0,0,0,.7)";ctx.shadowBlur=3;ctx.fillStyle="#ffffff";
+    var label=Math.round(dist)+" m";
+    if(on){
+      ctx.beginPath();ctx.moveTo(sx,sy-28);ctx.lineTo(sx-8,sy-42);ctx.lineTo(sx+8,sy-42);ctx.closePath();ctx.fillStyle="#ff8a4c";ctx.fill();
+      ctx.fillStyle="#fff";ctx.fillText(label,sx,sy-48);
+    }else{
+      var ex=Math.min(W-30,Math.max(30,sx)),ey=Math.min(H-70,Math.max(60,sy));
+      var ang=Math.atan2(sy-H/2,sx-W/2);
+      ctx.translate(ex,ey);ctx.rotate(ang);
+      ctx.beginPath();ctx.moveTo(14,0);ctx.lineTo(-8,-10);ctx.lineTo(-8,10);ctx.closePath();ctx.fillStyle="#ff8a4c";ctx.fill();
+      ctx.rotate(-ang);ctx.fillStyle="#fff";ctx.fillText(label,0,-18);
+    }
+    ctx.restore();
+  }
+  function render(dt){
+    var lv=S.lv,d=S.d,sz=E.size(),W=sz.W,H=sz.H;
+    var cx,cy,cz,yaw,pitch;
+    if(S.view===0){
+      var diff=((d.yaw-S.camYaw+PI*3)%(PI*2))-PI;S.camYaw+=diff*Math.min(1,dt*4);
+      cx=d.x-Math.sin(S.camYaw)*4.5;cz=d.z-Math.cos(S.camYaw)*4.5;cy=Math.max(1.1,d.y+1.7);
+      yaw=S.camYaw;pitch=Math.atan2(cy-(d.y+0.3),4.5);
+    }else{
+      cx=d.x+Math.sin(d.yaw)*0.3;cz=d.z+Math.cos(d.yaw)*0.3;cy=d.y+0.12;yaw=d.yaw;pitch=0.12;S.camYaw=d.yaw;
+    }
+    E.setCam(cx,cy,cz,yaw,pitch);
+    E.sky(lv.env);E.ground(lv.env);
+    lv.tasks.forEach(function(t,i){if(t.k==="land")pad(t.x,t.z,t.hs,i===S.ti?"rgba(255,138,76,.75)":"rgba(120,140,150,.7)");});
+    pad(lv.start.x,lv.start.z,1.3,"rgba(120,140,150,.55)");
+    if(lv.ceil){var c=lv.ceil,R=80;E.poly([[cx-R,c,cz-R],[cx+R,c,cz-R],[cx+R,c,cz+R],[cx-R,c,cz+R]],"rgba(20,26,32,.35)",null);}
+    var sh=[];for(var i=0;i<12;i++){var a=i/12*PI*2,r=0.38+0.05*d.y;sh.push([d.x+Math.cos(a)*r,0.006,d.z+Math.sin(a)*r]);}
+    E.poly(sh,"rgba(0,0,0,"+Math.max(0.12,0.38-d.y*0.03)+")",null);
+    var items=[];
+    lv.objs.forEach(function(o){
+      var x=o.t==="box"?(o.x0+o.x1)/2:o.x,z=o.t==="box"?(o.z0+o.z1)/2:o.z;
+      items.push({d:E.sortKey({x:x,z:z}),f:function(){
+        if(o.t==="box")E.box(o.x0,o.x1,o.z0,o.z1,o.h,o.color);
+        else if(o.t==="cyl")E.prism(o.x,o.z,o.r,o.h,8,o.color,"#fff3e8");
+        else{E.prism(o.x,o.z,0.25,2,6,"#6b4a2b",null);E.cone(o.x,o.z,1.5,1.6,5,8,"#2f7d3a");E.cone(o.x,o.z,1.1,3.6,3.4,8,"#38903f");}
+      }});
+    });
+    lv.tasks.forEach(function(t,i){
+      if(t.k==="gate"){
+        var col=i<S.ti?"rgba(105,219,124,.55)":i===S.ti?"#ff6a1f":"rgba(240,248,252,.75)";
+        items.push({d:E.sortKey(t),f:function(){
+          var pts=E.circle3([t.x,t.y,t.z],t.R,"v",28,t.a);E.ringStroke(pts,col,0.12);
+          E.line([t.x,0,t.z],[t.x,t.y-t.R,t.z],"rgba(240,248,252,.5)",1.5);
+        }});
+      }else if(t.k==="hold"&&i===S.ti){
+        items.push({d:E.sortKey(t),f:function(){
+          var c=[t.x,t.y,t.z],a=S.hold>0?"#69db7c":"#ff8a4c";
+          E.line([t.x,0,t.z],[t.x,t.y-t.r,t.z],"rgba(255,255,255,.45)",1.5);
+          E.ringStroke(E.circle3(c,t.r,"h",20),a,0.05);E.ringStroke(E.circle3(c,t.r,"v",20,0),a,0.05);E.ringStroke(E.circle3(c,t.r,"v",20,PI/2),a,0.05);
+        }});
+      }
+    });
+    S.flags.forEach(function(f){
+      if(f.got)return;
+      var col=f.p===1?"#ffd43b":f.p===2?"#ff922b":"#f03e3e";
+      items.push({d:E.sortKey(f),f:function(){
+        E.line([f.x,0,f.z],[f.x,f.y+0.8,f.z],"#f1f3f5",2);
+        E.poly([[f.x,f.y+0.8,f.z],[f.x,f.y-0.1,f.z],[f.x+0.9,f.y+0.35,f.z+0.2]],col,"#1b1b1b",1);
+        E.ringStroke(E.circle3([f.x,f.y+0.35,f.z],1.7,"h",16),"rgba(255,255,255,.5)",0.03);
+      }});
+    });
+    if(S.view===0&&!(S.cool>0&&Math.floor(S.cool*10)%2===0)){
+      items.push({d:E.sortKey(d),f:function(){E.drone(d);}});
+    }
+    items.sort(function(a,b){return b.d-a.d;});
+    items.forEach(function(it){it.f();});
+    // kohdenuoli
+    var tg=null,cur=lv.tasks[S.ti];
+    if(cur)tg={x:cur.x,y:cur.k==="land"?0.6:cur.y,z:cur.z};
+    else if(lv.free){var bd=1e9;S.flags.forEach(function(f){if(f.got)return;var q=Math.hypot(d.x-f.x,d.y-f.y,d.z-f.z);if(q<bd){bd=q;tg={x:f.x,y:f.y+0.35,z:f.z};}});}
+    if(tg&&S.state==="play")marker(tg,Math.hypot(d.x-tg.x,d.y-tg.y,d.z-tg.z),W,H);
+    // sauvanäyttö
+    var R=Math.min(34,H*0.09),by=H-R-14;
+    function stick(cx0,ux,uy){
+      ctx.beginPath();ctx.arc(cx0,by,R,0,PI*2);ctx.fillStyle="rgba(6,18,28,.35)";ctx.fill();
+      ctx.strokeStyle="rgba(255,255,255,.55)";ctx.lineWidth=1.5;ctx.stroke();
+      ctx.beginPath();ctx.arc(cx0+ux*R*0.65,by+uy*R*0.65,R*0.28,0,PI*2);ctx.fillStyle="#ff8a4c";ctx.fill();
+    }
+    stick(R+16,S.inp.yw,-S.inp.ay);stick(W-R-16,S.inp.ax,-S.inp.af);
+    // HUD
+    var spd=Math.hypot(d.vx,d.vz),dist=Math.hypot(d.x-lv.start.x,d.z-lv.start.z);
+    var L=["KORKEUS "+d.y.toFixed(1)+" m","NOPEUS "+spd.toFixed(1)+" m/s","ETÄISYYS "+Math.round(dist)+" m"];
+    if(d.y>120)L.push("YLI 120 m: lennä alemmas");
+    if(dist>120)L.push("LIIAN KAUKANA: et enää näe dronea");
+    hudL.innerHTML=L.map(function(s,i){return "<span"+(i>2?" class=\"warn\"":"")+">"+s+"</span>";}).join("");
+    var R2=[S.view?"FPV":"Takakamera"];
+    if(!lv.free){R2.push("AIKA "+fmt(S.t)+(S.pen?" +"+S.pen+" s":""));var tk=lv.tasks[S.ti];if(tk)R2.push((S.ti+1)+"/"+lv.tasks.length+" "+tk.txt+(tk.k==="hold"&&S.hold>0?" ("+S.hold.toFixed(1)+" s)":""));}
+    else{R2.push("PISTEET "+S.score);R2.push("AIKAA "+fmt(Math.max(0,lv.roundT-S.t)));}
+    if(S.msgT>0)R2.push(S.msg);
+    hudR.innerHTML=R2.map(function(s,i){return "<span"+(S.msgT>0&&i===R2.length-1?" class=\"warn\"":"")+">"+s.replace(/</g,"&lt;")+"</span>";}).join("");
+  }
+
+  /* --- silmukka --- */
+  var last=performance.now();
+  function frame(now){
+    var dt=Math.min(0.05,(now-last)/1000);last=now;
+    update(dt);render(dt);
+    requestAnimationFrame(frame);
+  }
+  load(0);
+  requestAnimationFrame(frame);
+})();
+</script>
+
+</body></html>
